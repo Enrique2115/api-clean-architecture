@@ -48,6 +48,17 @@ export default class UserRepository implements IUserRepository {
       relations: {
         roles: true,
       },
+      select: {
+        oid_user: true,
+        username: true,
+        email: true,
+        password: true,
+        roles: { name: true },
+        status: true,
+        token: false,
+        created_at: true,
+        updated_at: true,
+      },
     })
 
     return users
@@ -56,6 +67,9 @@ export default class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { email },
+      relations: {
+        roles: true,
+      },
     })
     return user ?? null
   }

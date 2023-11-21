@@ -1,4 +1,4 @@
-import { handleBcrypt } from '@app/auth/interfaces/utils/bcrypt'
+import { handleBcrypt } from '@app/auth/interfaces'
 import type { IAuthRepository } from '@app/auth/domain'
 import type { User } from '@app/user/domain'
 import type { Repository, DataSource } from 'typeorm'

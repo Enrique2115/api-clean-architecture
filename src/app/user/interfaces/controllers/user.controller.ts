@@ -22,7 +22,7 @@ export default class UserController implements IUserController {
 
     const data = await userRepository.findAll()
 
-    await reply.status(HttpStatusCode.OK).send({ data })
+    await reply.status(HttpStatusCode.OK).send(data)
   }
 
   /**
@@ -44,7 +44,7 @@ export default class UserController implements IUserController {
 
       const data = await findbyemailUserUsecase.execute(email)
 
-      await reply.status(HttpStatusCode.OK).send({ data })
+      await reply.status(HttpStatusCode.OK).send(data)
     } catch (error: any) {
       throw ApiError(error.statusCode, error.message)
     }
