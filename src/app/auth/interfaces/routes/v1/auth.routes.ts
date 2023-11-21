@@ -1,5 +1,6 @@
 import type { IAuthController } from '@app/auth/type'
 import type { FastifyInstance } from 'fastify'
+import { registerSchema } from './auth-config.schema'
 
 const authRoutes = async (
   fastify: FastifyInstance,
@@ -10,7 +11,7 @@ const authRoutes = async (
     fastify.diContainer.resolve('authController')
 
   fastify
-    .post('/register', async (request, reply) => {
+    .post('/register', { schema: registerSchema }, async (request, reply) => {
       await authController.register(request, reply)
     })
     .post('/login', async (request, reply) => {

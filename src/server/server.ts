@@ -5,6 +5,7 @@ import { NODE_ENV } from '@config/server'
 import cors from '@fastify/cors'
 import Fastify from 'fastify'
 import fp from 'fastify-plugin'
+import LoadSwagger from '@docs/swagger'
 import pkg from '../../package.json'
 import type { AwilixContainer } from 'awilix'
 import type { FastifyInstance } from 'fastify'
@@ -36,6 +37,8 @@ async function createServer(
       done()
     })
   )
+
+  await LoadSwagger(server)
 
   server.get('/', async (request, reply) => {
     return {

@@ -1,5 +1,10 @@
 import type { IUserController } from '@app/user/type'
 import type { FastifyInstance } from 'fastify'
+import {
+  findByEmailUserSchema,
+  findByIdUserSchema,
+  findUsersSchema,
+} from './user-config.schema'
 
 const userRoutes = async (
   fastify: FastifyInstance,
@@ -10,15 +15,19 @@ const userRoutes = async (
     fastify.diContainer.resolve('userController')
 
   fastify
-    .get('/', async (request, reply) => {
+    .get('/', { schema: findUsersSchema }, async (request, reply) => {
       await userController.findAll(request, reply)
     })
-    .get('/:id', async (request, reply) => {
+    .get('/:id', { schema: findByIdUserSchema }, async (request, reply) => {
       await userController.findById(request, reply)
     })
-    .get('/:email/email', async (request, reply) => {
-      await userController.findByEmail(request, reply)
-    })
+    .get(
+      '/:email/email',
+      { schema: findByEmailUserSchema },
+      async (request, reply) => {
+        await userController.findByEmail(request, reply)
+      }
+    )
 
   done()
 }

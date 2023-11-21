@@ -33,7 +33,13 @@ const errorResponseSchema = z.object({
   stack: z.string(),
 })
 
-const usersResponseSchema = z.array(userResponseSchema)
+const arrUserResponseSchema = z.object({
+  ...userInput,
+  ...userGenerated,
+  status: z.boolean(),
+})
+
+const usersResponseSchema = z.array(arrUserResponseSchema)
 
 export type RegisterUserInput = z.infer<typeof registerUserSchema>
 

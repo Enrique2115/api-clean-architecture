@@ -3,12 +3,15 @@ import createServer from '@server/server'
 import type { Config } from '@config/index'
 import TypeOrmConnection from '@db/typeorm'
 import registerRoutes from '@server/routes/register-routes'
+import { LoadSchemas } from '@server/loadSchemas'
 
 const app = async () => {
   const fastify = await createServer(container)
   const config: Config = await container.resolve('config')
 
   try {
+    LoadSchemas(fastify)
+
     await registerRoutes(fastify)
 
     await TypeOrmConnection(config)
