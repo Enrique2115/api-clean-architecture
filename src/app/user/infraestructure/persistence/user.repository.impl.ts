@@ -1,17 +1,35 @@
-import type { User, IUserRepository, Roles } from '@app/user/domain'
+import { ApiError } from '@server/errors'
+import { HttpStatusCode } from '@server/enums'
+import { User as UserEntity, Role as RoleEntity } from '@db/typeorm/entity'
 import type { DataSource, Repository } from 'typeorm'
-import { User as UserEntity } from '@db/typeorm/entity'
+import type { User, IUserRepository, Roles } from '@app/user/domain'
 
 export default class UserRepository implements IUserRepository {
   private readonly userRepository: Repository<UserEntity>
+  private readonly roleRepository: Repository<RoleEntity>
   private readonly datasource
 
   constructor(private readonly entityManager: DataSource) {
     this.datasource = this.entityManager.initialize()
     this.userRepository = this.entityManager.getRepository(UserEntity)
+    this.roleRepository = this.entityManager.getRepository(RoleEntity)
   }
 
-  async assignRoles(user: User, roles: Roles[]): Promise<void> {}
+  async assignRoles(user: User, roles: Roles[]): Promise<void> {
+    if (roles !== null) {
+      for (const roleData of roles) {
+        const role = await this.roleRepository.findOneBy({
+          name: roleData.name,
+        })
+
+        if (role !== null) {
+          user.roles = [role]
+        } else {
+          throw ApiError(HttpStatusCode.NotFound, 'Rol no encontrado')
+        }
+      }
+    }
+  }
 
   createUserEntity(
     username: string,
