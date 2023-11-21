@@ -20,6 +20,7 @@ const registerRoutes = async (fastify: FastifyInstance) => {
         await Promise.all(
           fileNames.map(async fileName => {
             const file = removeExtension(fileName)
+            if (file !== folderName) return
             if (file === 'index') return
             try {
               const item = await import(path.join(route, fileName))
