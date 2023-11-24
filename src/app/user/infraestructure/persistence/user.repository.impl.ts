@@ -89,6 +89,12 @@ export default class UserRepository implements IUserRepository {
     username: string,
     email: string
   ): Promise<User | null> {
-    return null
+    const data = await this.userRepository.findOne({
+      where: [{ username }, { email }],
+      relations: {
+        roles: true,
+      },
+    })
+    return data
   }
 }
