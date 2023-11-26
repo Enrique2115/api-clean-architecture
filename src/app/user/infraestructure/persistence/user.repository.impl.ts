@@ -7,10 +7,10 @@ import type { User, IUserRepository, Roles } from '@app/user/domain'
 export default class UserRepository implements IUserRepository {
   private readonly userRepository: Repository<UserEntity>
   private readonly roleRepository: Repository<RoleEntity>
-  private readonly datasource
+  // private readonly datasource
 
   constructor(private readonly entityManager: DataSource) {
-    this.datasource = this.entityManager.initialize()
+    // this.datasource = this.entityManager.initialize()
     this.userRepository = this.entityManager.getRepository(UserEntity)
     this.roleRepository = this.entityManager.getRepository(RoleEntity)
   }
@@ -89,6 +89,12 @@ export default class UserRepository implements IUserRepository {
     username: string,
     email: string
   ): Promise<User | null> {
-    return null
+    const data = await this.userRepository.findOne({
+      where: [{ username }, { email }],
+      relations: {
+        roles: true,
+      },
+    })
+    return data
   }
 }

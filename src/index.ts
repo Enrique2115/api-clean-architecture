@@ -1,9 +1,11 @@
+import 'module-alias/register'
+import 'reflect-metadata'
+import { AppDataSource } from '@db/typeorm/data-source'
+import { LoadSchemas } from '@server/loadSchemas'
 import container from './container'
 import createServer from '@server/server'
-import type { Config } from '@config/index'
-import TypeOrmConnection from '@db/typeorm'
 import registerRoutes from '@server/routes/register-routes'
-import { LoadSchemas } from '@server/loadSchemas'
+import type { Config } from '@config/index'
 
 const app = async () => {
   const fastify = await createServer(container)
@@ -14,9 +16,9 @@ const app = async () => {
 
     await registerRoutes(fastify)
 
-    await TypeOrmConnection(config)
+    await AppDataSource.initialize()
 
-    await fastify.listen({ port: config.api.port })
+    await fastify.listen({ port: config.api.port, host: config.api.host })
   } catch (error) {
     fastify.log.error(error)
     process.exit(1)
