@@ -1,5 +1,5 @@
 import { DB_MONGO, DB_SQL } from './database'
-import { NODE_ENV, PORT } from './server'
+import { HOST, NODE_ENV, PORT } from './server'
 import yenv from 'yenv'
 
 const env = yenv()
@@ -13,6 +13,7 @@ export interface Config {
   }
   api: {
     port: number
+    host: string
   }
   database: {
     sql: typeof DB_SQL
@@ -25,7 +26,7 @@ export default {
   auth: {
     jwt: { secret: env.JWT.secret },
   },
-  api: { port: PORT },
+  api: { port: PORT, host: HOST },
   database: {
     sql: DB_SQL,
     mongodb: DB_MONGO,

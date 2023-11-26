@@ -6,7 +6,7 @@ import { AppDataSource } from '@db/typeorm/data-source'
 
 diContainer.register({
   config: asValue(Config),
-  entityManager: asValue(AppDataSource(Config)),
+  entityManager: asValue(AppDataSource),
 })
 
 diContainer.loadModules(
