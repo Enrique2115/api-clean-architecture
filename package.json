@@ -6,9 +6,9 @@
   "scripts": {
     "build:clean": "rimraf dist",
     "build:gulp": "gulp copyEnv",
-    "build:tsc": "tsc -p ./tsconfig.prd.json",
+    "build:tsc": "tsc -p ./tsconfig.prod.json",
     "build": "npm rum build:clean && npm run build:tsc && npm run build:gulp",
-    "dev": "tsnd --respawn src/index.ts",
+    "dev": "tsnd --inspect=0.0.0.0:9229 --respawn src/index.ts",
     "format": "prettier --write .",
     "lint:fix": "eslint --fix . --ext .ts",
     "lint": "eslint --ext .ts .",

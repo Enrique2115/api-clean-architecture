@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:5.7
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+
+  app-production:
+    depends_on:
+      - mysqldb
+    container_name: app-production
+    env_file:
+      - ./.env
+    build:
+      target: production
+      context: .
+      args:
+        - PORT=$NODE_PRD_PORT
+    links:
+      - mysqldb
+    ports:
+      - ${NODE_PRD_PORT}:${NODE_DOCKER_PORT}
+
+  app-dev:
+    depends_on:
+      - mysqldb
+    container_name: app-dev
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    build:
+      target: dev
+      context: .
+      args:
+        - PORT=$NODE_DEV_PORT
+    links:
+      - mysqldb
+    ports:
+      - $NODE_DEV_PORT:$NODE_DEV_DOCKER_PORT
+      - 9229:9229
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules/
+
+volumes:
+  node_modules:

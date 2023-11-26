@@ -1,0 +1,10 @@
+*
+!/package.json
+!/pnpm-lock.yaml
+!/tsconfig.prod.json
+!/tsconfig.json
+!/src
+!/config
+!/docs
+!/env.yaml
+!/gulpfile.js
